@@ -12,31 +12,38 @@
                     <h2 class="text-center mb-4">Crear Usuario</h2>
 
                     <form method="post" asp-action="Create" class="form" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label for="Nombre">Nombre:</label>
-                            <input type="text" class="form-control" id="Nombre" name="Nombre"
-                                placeholder="Ingrese el nombre" required>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="Nombre">Nombre:</label>
+                                <input type="text" class="form-control" id="Nombre" name="Nombre"
+                                    placeholder="Ingrese el nombre" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="Apellido">Apellido:</label>
+                                <input type="text" class="form-control" id="Apellido" name="Apellido"
+                                    placeholder="Ingrese el apellido" required>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="Apellido">Apellido:</label>
-                            <input type="text" class="form-control" id="Apellido" name="Apellido"
-                                placeholder="Ingrese el apellido" required>
-                        </div>
+
                         <div class="form-group">
                             <label for="Dni">DNI:</label>
                             <input type="text" class="form-control" id="Dni" name="Dni" placeholder="Ingrese el DNI"
                                 required>
                         </div>
-                        <div class="form-group">
-                            <label for="Mail">Correo Electrónico:</label>
-                            <input type="email" class="form-control" id="Mail" name="Mail"
-                                placeholder="Ingrese el correo electrónico" required>
+
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="Mail">Correo Electrónico:</label>
+                                <input type="email" class="form-control" id="Mail" name="Mail"
+                                    placeholder="Ingrese el correo electrónico" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="Clave">Contraseña:</label>
+                                <input type="password" class="form-control" id="Clave" name="Clave"
+                                    placeholder="Ingrese la contraseña" required>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="Clave">Contraseña:</label>
-                            <input type="password" class="form-control" id="Clave" name="Clave"
-                                placeholder="Ingrese la contraseña" required>
-                        </div>
+
                         <div class="form-group">
                             <label for="Telefono">Teléfono:</label>
                             <input type="text" class="form-control" id="Telefono" name="Telefono"
@@ -47,24 +54,30 @@
                             <input type="text" class="form-control" id="Direccion" name="Direccion"
                                 placeholder="Ingrese la dirección" required>
                         </div>
-                        <div class="form-group">
-                            <label for="Ciudad">Ciudad:</label>
-                            <input type="text" class="form-control" id="Ciudad" name="Ciudad"
-                                placeholder="Ingrese la ciudad" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="Pais">País:</label>
-                            <input type="text" class="form-control" id="Pais" name="Pais" placeholder="Ingrese el país"
-                                required>
+
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="Ciudad">Ciudad:</label>
+                                <input type="text" class="form-control" id="Ciudad" name="Ciudad"
+                                    placeholder="Ingrese la ciudad" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="Pais">País:</label>
+                                <input type="text" class="form-control" id="Pais" name="Pais"
+                                    placeholder="Ingrese el país" required>
+                            </div>
                         </div>
 
-                        <div class="text-center">
-                            <label>Ubicacion recomendada:</label>
-                            <div id="map"></div>
+                        <div class="container d-flex justify-content-center">
+                            <div class="text-center">
+                                <label>Ubicacion recomendada:</label>
+                                <div id="map"></div>
+                            </div>
                         </div>
 
-                        <input type="hidden" class="form-control" id="Latitud" name="Latitud" >
-                        <input type="hidden" class="form-control" id="Longitud" name="Longitud" >
+
+                        <input type="hidden" class="form-control" id="Latitud" name="Latitud">
+                        <input type="hidden" class="form-control" id="Longitud" name="Longitud">
 
                         <div class="form-group">
                             <label for="Imagen">Imagen:</label>
@@ -93,8 +106,9 @@
 <style>
     #map {
         height: 300px;
-        width: 100%;
-        border-radius: 8px;
+        width: 300px;
+        border-radius: 50%;
+        border: .1px solid rgb(57, 59, 167);
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
@@ -132,7 +146,7 @@
     // Función para obtener la ubicación inicial del usuario
     function obtenerUbicacionInicial() {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
+            navigator.geolocation.getCurrentPosition(function (position) {
                 var lat = position.coords.latitude.toFixed(8);  // Limitar la latitud a 8 decimales
                 var lng = position.coords.longitude.toFixed(8);  // Limitar la longitud a 8 decimales
 
@@ -152,7 +166,6 @@
             });
         }
     }
-
     // Llamada a la función para obtener la ubicación inicial del usuario
     obtenerUbicacionInicial();
 
@@ -176,5 +189,3 @@
 
     map.on('click', onMapClick);
 </script>
-
-
