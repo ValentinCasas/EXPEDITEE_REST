@@ -1,7 +1,7 @@
 @model EXPEDITEE_REST.Models.Usuario
 
 @{
-	ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create";
 }
 
 <div class="container">
@@ -14,51 +14,62 @@
                     <form method="post" asp-action="Create" class="form" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="Nombre">Nombre:</label>
-                            <input type="text" class="form-control" id="Nombre" name="Nombre" placeholder="Ingrese el nombre" required>
+                            <input type="text" class="form-control" id="Nombre" name="Nombre"
+                                placeholder="Ingrese el nombre" required>
                         </div>
                         <div class="form-group">
                             <label for="Apellido">Apellido:</label>
-                            <input type="text" class="form-control" id="Apellido" name="Apellido" placeholder="Ingrese el apellido" required>
+                            <input type="text" class="form-control" id="Apellido" name="Apellido"
+                                placeholder="Ingrese el apellido" required>
                         </div>
                         <div class="form-group">
                             <label for="Dni">DNI:</label>
-                            <input type="text" class="form-control" id="Dni" name="Dni" placeholder="Ingrese el DNI" required>
+                            <input type="text" class="form-control" id="Dni" name="Dni" placeholder="Ingrese el DNI"
+                                required>
                         </div>
                         <div class="form-group">
                             <label for="Mail">Correo Electrónico:</label>
-                            <input type="email" class="form-control" id="Mail" name="Mail" placeholder="Ingrese el correo electrónico" required>
+                            <input type="email" class="form-control" id="Mail" name="Mail"
+                                placeholder="Ingrese el correo electrónico" required>
                         </div>
                         <div class="form-group">
                             <label for="Clave">Contraseña:</label>
-                            <input type="password" class="form-control" id="Clave" name="Clave" placeholder="Ingrese la contraseña" required>
+                            <input type="password" class="form-control" id="Clave" name="Clave"
+                                placeholder="Ingrese la contraseña" required>
                         </div>
                         <div class="form-group">
                             <label for="Telefono">Teléfono:</label>
-                            <input type="text" class="form-control" id="Telefono" name="Telefono" placeholder="Ingrese el teléfono" required>
+                            <input type="text" class="form-control" id="Telefono" name="Telefono"
+                                placeholder="Ingrese el teléfono" required>
                         </div>
                         <div class="form-group">
                             <label for="Direccion">Dirección:</label>
-                            <input type="text" class="form-control" id="Direccion" name="Direccion" placeholder="Ingrese la dirección" required>
+                            <input type="text" class="form-control" id="Direccion" name="Direccion"
+                                placeholder="Ingrese la dirección" required>
                         </div>
                         <div class="form-group">
                             <label for="Ciudad">Ciudad:</label>
-                            <input type="text" class="form-control" id="Ciudad" name="Ciudad" placeholder="Ingrese la ciudad" required>
+                            <input type="text" class="form-control" id="Ciudad" name="Ciudad"
+                                placeholder="Ingrese la ciudad" required>
                         </div>
                         <div class="form-group">
                             <label for="Pais">País:</label>
-                            <input type="text" class="form-control" id="Pais" name="Pais" placeholder="Ingrese el país" required>
+                            <input type="text" class="form-control" id="Pais" name="Pais" placeholder="Ingrese el país"
+                                required>
                         </div>
-                        <div class="form-group">
-                            <label for="Latitud">Latitud:</label>
-                            <input type="text" class="form-control" id="Latitud" name="Latitud" placeholder="Ingrese la latitud">
+
+                        <div class="text-center">
+                            <label>Ubicacion recomendada:</label>
+                            <div id="map"></div>
                         </div>
-                        <div class="form-group">
-                            <label for="Longitud">Longitud:</label>
-                            <input type="text" class="form-control" id="Longitud" name="Longitud" placeholder="Ingrese la longitud">
-                        </div>
+
+                        <input type="hidden" class="form-control" id="Latitud" name="Latitud" >
+                        <input type="hidden" class="form-control" id="Longitud" name="Longitud" >
+
                         <div class="form-group">
                             <label for="Imagen">Imagen:</label>
-                            <input type="file" class="form-control" id="Imagen" name="ImagenFile" placeholder="Ingrese la URL de la imagen">
+                            <input type="file" class="form-control" id="Imagen" name="ImagenFile"
+                                placeholder="Ingrese la URL de la imagen">
                         </div>
                         <div class="form-group">
                             <label for="Rol">Rol:</label>
@@ -78,3 +89,92 @@
         </div>
     </div>
 </div>
+
+<style>
+    #map {
+        height: 300px;
+        width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-control {
+        border-radius: 4px;
+        border: 1px solid #ced4da;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        border-radius: 4px;
+    }
+
+    .btn-primary:hover {
+        background-color: #0069d9;
+    }
+</style>
+
+<script>
+    var map = L.map('map').setView([-33.302143, -66.336844], 13);
+    var lastMarker = null;
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    // Función para obtener la ubicación inicial del usuario
+    function obtenerUbicacionInicial() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var lat = position.coords.latitude.toFixed(8);  // Limitar la latitud a 8 decimales
+                var lng = position.coords.longitude.toFixed(8);  // Limitar la longitud a 8 decimales
+
+                var latInput = document.getElementById('Latitud');
+                var lngInput = document.getElementById('Longitud');
+                latInput.value = lat;
+                lngInput.value = lng;
+
+                map.setView([lat, lng], 13);
+
+                if (lastMarker !== null) {
+                    lastMarker.remove();
+                }
+
+                var marker = L.marker([lat, lng]).addTo(map);
+                lastMarker = marker;
+            });
+        }
+    }
+
+    // Llamada a la función para obtener la ubicación inicial del usuario
+    obtenerUbicacionInicial();
+
+    function onMapClick(e) {
+        var latInput = document.getElementById('Latitud');
+        var lngInput = document.getElementById('Longitud');
+
+        var lat = e.latlng.lat.toFixed(8);  // Limitar la latitud a 8 decimales
+        var lng = e.latlng.lng.toFixed(8);  // Limitar la longitud a 8 decimales
+
+        latInput.value = lat;
+        lngInput.value = lng;
+
+        if (lastMarker !== null) {
+            lastMarker.remove();
+        }
+
+        var marker = L.marker([lat, lng]).addTo(map);
+        lastMarker = marker;
+    }
+
+    map.on('click', onMapClick);
+</script>
+
+

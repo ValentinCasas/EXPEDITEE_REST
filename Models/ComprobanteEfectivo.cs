@@ -9,6 +9,12 @@ using System.Threading.Tasks;
 public class ComprobanteEfectivo
 {
     public int Id { get; set; }
+
     public string Imagen { get; set; }
+    [NotMapped]
+    public IFormFile? ImagenFile { get; set; }
+
+    public int IdPedido{ get; set; }
+    [ForeignKey(nameof(IdPedido))]
     public Pedido Pedido { get; set; }
 }

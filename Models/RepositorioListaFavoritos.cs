@@ -3,13 +3,11 @@ using MySqlConnector;
 
 namespace EXPEDITEE_REST.Models
 {
-    public class RepositorioRetroalimentacion
+    public class RepositorioListaFavoritos
     {
+        private string connectionString = "Server=localhost;User=root;Password=;Database=expeditee;SslMode=none";
 
-        string connectionString = "Server=localhost;User=root;Password=;Database=expeditee;SslMode=none";
-
-
-        public RepositorioRetroalimentacion()
+        public RepositorioListaFavoritos()
         {
         }
 
@@ -52,26 +50,23 @@ namespace EXPEDITEE_REST.Models
             return usuarios;
         }
 
-
-
-        public int Alta(Retroalimentacion retroalimentacion)
+        public int Alta(ListaFavoritos listaFavoritos)
         {
             int res = 0;
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string query = @"INSERT INTO retroalimentacion (FechaEnvio,Descripcion,IdUsuario)
+                string query = @"INSERT INTO listaFavoritos (Nombre,IdCliente)
                             VALUES
-                            (@fechaEnvio, @descripcion,@idusuario);
+                            (@nombre,@idusuario);
                             SELECT LAST_INSERT_ID();";
                 using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@fechaEnvio", retroalimentacion.FechaEnvio);
-                    command.Parameters.AddWithValue("@descripcion", retroalimentacion.Descripcion);
-                    command.Parameters.AddWithValue("@idusuario", retroalimentacion.IdUsuario);
+                    command.Parameters.AddWithValue("@nombre", listaFavoritos.Nombre);
+                    command.Parameters.AddWithValue("@idusuario", listaFavoritos.IdCliente);
 
                     connection.Open();
                     res = Convert.ToInt32(command.ExecuteScalar());
-                    retroalimentacion.Id = res;
+                    listaFavoritos.Id = res;
                     connection.Close();
                 }
             }
@@ -80,8 +75,5 @@ namespace EXPEDITEE_REST.Models
 
 
 
-
-
     }
-
 }

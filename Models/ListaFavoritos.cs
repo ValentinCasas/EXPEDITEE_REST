@@ -6,10 +6,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-public class ListaFavoritos
+namespace EXPEDITEE_REST.Models
 {
-    public int Id { get; set; }
-    public string Nombre { get; set; }
-    public List<Producto> Productos { get; set; }
-    public Usuario Usuario { get; set; }
+    public class ListaFavoritos
+    {
+        public int Id { get; set; }
+        public string Nombre { get; set; }
+
+        public int IdCliente { get; set; }
+        [ForeignKey(nameof(IdCliente))]
+        public Usuario Usuario { get; set; }
+
+        public List<Producto> Productos { get; set; }
+    }
 }
