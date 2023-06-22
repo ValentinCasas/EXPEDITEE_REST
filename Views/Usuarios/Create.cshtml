@@ -1,0 +1,80 @@
+@model EXPEDITEE_REST.Models.Usuario
+
+@{
+	ViewData["Title"] = "Create";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="text-center mb-4">Crear Usuario</h2>
+
+                    <form method="post" asp-action="Create" class="form" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="Nombre">Nombre:</label>
+                            <input type="text" class="form-control" id="Nombre" name="Nombre" placeholder="Ingrese el nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="Apellido">Apellido:</label>
+                            <input type="text" class="form-control" id="Apellido" name="Apellido" placeholder="Ingrese el apellido" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="Dni">DNI:</label>
+                            <input type="text" class="form-control" id="Dni" name="Dni" placeholder="Ingrese el DNI" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="Mail">Correo Electrónico:</label>
+                            <input type="email" class="form-control" id="Mail" name="Mail" placeholder="Ingrese el correo electrónico" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="Clave">Contraseña:</label>
+                            <input type="password" class="form-control" id="Clave" name="Clave" placeholder="Ingrese la contraseña" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="Telefono">Teléfono:</label>
+                            <input type="text" class="form-control" id="Telefono" name="Telefono" placeholder="Ingrese el teléfono" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="Direccion">Dirección:</label>
+                            <input type="text" class="form-control" id="Direccion" name="Direccion" placeholder="Ingrese la dirección" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="Ciudad">Ciudad:</label>
+                            <input type="text" class="form-control" id="Ciudad" name="Ciudad" placeholder="Ingrese la ciudad" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="Pais">País:</label>
+                            <input type="text" class="form-control" id="Pais" name="Pais" placeholder="Ingrese el país" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="Latitud">Latitud:</label>
+                            <input type="text" class="form-control" id="Latitud" name="Latitud" placeholder="Ingrese la latitud">
+                        </div>
+                        <div class="form-group">
+                            <label for="Longitud">Longitud:</label>
+                            <input type="text" class="form-control" id="Longitud" name="Longitud" placeholder="Ingrese la longitud">
+                        </div>
+                        <div class="form-group">
+                            <label for="Imagen">Imagen:</label>
+                            <input type="file" class="form-control" id="Imagen" name="ImagenFile" placeholder="Ingrese la URL de la imagen">
+                        </div>
+                        <div class="form-group">
+                            <label for="Rol">Rol:</label>
+                            <select class="form-control" id="Rol" name="Rol" required>
+                                <option value="1">Administrador</option>
+                                <option value="2">Empleado</option>
+                                <option value="3">Cliente</option>
+                            </select>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary mt-4">Crear Usuario</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

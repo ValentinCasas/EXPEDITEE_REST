@@ -1,0 +1,43 @@
+@model EXPEDITEE_REST.Models.Retroalimentacion
+@{
+    ViewData["Title"] = "Crear retroalimentacion";
+    var ListaUsuarios = (IList<Usuario>)ViewBag.usuarios;
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="text-center mb-4">Crear Retroalimentación</h2>
+
+                    <form method="post" asp-action="Create" class="form">
+                        <div class="form-group">
+                            <label for="Descripcion">Descripción:</label>
+                            <input type="text" class="form-control" id="Descripcion" name="Descripcion"
+                                placeholder="Ingrese la descripción" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="IdUsuario">ID de Usuario:</label>
+                            <select class="form-control" id="IdUsuario" name="IdUsuario">
+                                <option value="">Seleccione un usuario</option>
+                                @foreach (var usuario in ListaUsuarios)
+                                {
+                                    <option value="@usuario.Id">@usuario.Nombre @usuario.Apellido</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary mt-4">Crear Retroalimentación</button>
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
