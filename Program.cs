@@ -3,16 +3,19 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using QRCoder;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
+/* builder.WebHost.UseUrls("http://localhost:5250", "http://*:5250", "http://192.168.0.102:5250");
+ */
 builder.WebHost.UseUrls("http://localhost:5250", "http://*:5250", "http://192.168.0.101:5250");
 
 
 builder.Services.AddControllersWithViews();
 
-/* builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 	.AddCookie(options =>//el sitio web valida con cookie
     {
         options.LoginPath = "/Usuarios/Login";
@@ -52,7 +55,7 @@ builder.Services.AddControllersWithViews();
             }
         };
     });
- */
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

@@ -33,6 +33,11 @@ public class UsuariosController : Controller
         this.environment = environment;
     }
 
+    public ActionResult Index()
+    {
+        return View();
+    }
+
 
     [HttpGet]
     public IActionResult Create()
@@ -107,5 +112,102 @@ public class UsuariosController : Controller
 
         return View();
     }
+
+
+    [AllowAnonymous]
+    // GET: Usuarios/Login/
+    public ActionResult Login(string returnUrl)
+    {
+        try
+        {
+            TempData["returnUrl"] = returnUrl;
+            return View();
+        }
+        catch (Exception ex)
+        {
+            TempData["Error"] = ex.Message;
+            ModelState.AddModelError("", ex.Message);
+            return View();
+        }
+    }
+
+    // POST: Usuarios/Login/
+    [HttpPost]
+    [AllowAnonymous]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Login(LoginView login)
+    {
+        RepositorioUsuario repositorio = new RepositorioUsuario();
+        try
+        {
+            var returnUrl = String.IsNullOrEmpty(TempData["returnUrl"] as string) ? "/Home" : TempData["returnUrl"].ToString();
+
+            if (ModelState.IsValid)
+            {
+                var e = repositorio.ObtenerPorEmail(login.Mail);
+
+                if (e == null)
+                {
+                    ModelState.AddModelError("", "El email o la clave no son correctos");
+                    TempData["returnUrl"] = returnUrl;
+                    return View();
+                }
+
+                string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                                 password: login.Clave,
+                                 salt: System.Text.Encoding.ASCII.GetBytes("palabrasecretaparalacontrasenia"),
+                                 prf: KeyDerivationPrf.HMACSHA1,
+                                 iterationCount: 30000,
+                                 numBytesRequested: 256 / 8));
+
+                if (e.Clave != hashed)
+                {
+                    ModelState.AddModelError("", "El email o la clave no son correctos");
+                    TempData["returnUrl"] = returnUrl;
+                    return View();
+                }
+
+                var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, e.Mail),
+                new Claim("FullName", e.Nombre + " " + e.Apellido),
+                new Claim(ClaimTypes.Role, e.RolNombre),
+                new Claim("EmpleadoId", e.Id.ToString()),
+
+            };
+
+                var claimsIdentity = new ClaimsIdentity(
+                        claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                await HttpContext.SignInAsync(
+                        CookieAuthenticationDefaults.AuthenticationScheme,
+                        new ClaimsPrincipal(claimsIdentity));
+
+                TempData.Remove("returnUrl");
+                return Redirect(returnUrl);
+            }
+            TempData["returnUrl"] = returnUrl;
+            return View();
+        }
+        catch (Exception ex)
+        {
+            TempData["Error"] = ex.Message;
+            ModelState.AddModelError("", ex.Message);
+            return View();
+        }
+    }
+
+
+
+    // GET: /salir
+    [Route("salir", Name = "logout")]
+    public async Task<ActionResult> Logout()
+    {
+        await HttpContext.SignOutAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme);
+        return RedirectToAction("Index", "Home");
+    }
+
+
 
 }

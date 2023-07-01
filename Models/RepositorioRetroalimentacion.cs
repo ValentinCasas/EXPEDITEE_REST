@@ -35,7 +35,7 @@ namespace EXPEDITEE_REST.Models
                                 Apellido = reader.GetString("Apellido"),
                                 Mail = reader.GetString("Mail"),
                                 Clave = reader.GetString("Clave"),
-                                Telefono = reader.GetInt64("Telefono").ToString(),
+                                Telefono = reader.GetInt64("Telefono"),
                                 Direccion = reader.GetString("Direccion"),
                                 Ciudad = reader.GetString("Ciudad"),
                                 Pais = reader.GetString("Pais"),

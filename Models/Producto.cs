@@ -19,6 +19,14 @@ namespace EXPEDITEE_REST.Models
         public IFormFile? ImagenFile { get; set; }
         public string Nombre { get; set; }
         public decimal Precio { get; set; }
+
+
+     /*    public ICollection<ProductoPedido> ProductosPedidos { get; set; }
+
+        public Producto()
+        {
+            ProductosPedidos = new List<ProductoPedido>();
+        } */
     }
 
 
