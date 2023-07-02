@@ -92,17 +92,7 @@ public class UsuarioController : ControllerBase
         }
     }
 
-    //retroalimentaciones
-    [HttpGet("retroalimentaciones")]
-    public List<Retroalimentacion> getRetroalimentaciones()
-    {
-        var retroalimentacion = _context.Retroalimentacion
-          .Include(m => m.Usuario)
-          .ToList();
-
-        return retroalimentacion;
-    }
-
+    
     // GET api/propietario/data
     [HttpGet("data")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -167,34 +157,6 @@ public class UsuarioController : ControllerBase
     }
 
 
-    // Envío de mensaje a empleado
-    [HttpGet("enviar/{idEmisor}/{idReceptor}/{mensaje}")]
-    public Mensaje enviarMensaje(int idEmisor, int idReceptor, string mensaje)
-    {
-        Usuario emisor = _context.Usuario.FirstOrDefault(u => u.Id == idEmisor);
-        Usuario receptor = _context.Usuario.FirstOrDefault(u => u.Id == idReceptor);
-
-        if (emisor != null && receptor != null)
-        {
-            Mensaje msj = new Mensaje
-            {
-                Descripcion = mensaje,
-                Fecha = DateTime.Now,
-                Emisor = emisor,
-                Receptor = receptor
-            };
-
-            _context.Mensaje.Add(msj);
-            _context.SaveChanges();
-
-            return msj;
-        }
-
-        return null;
-    }
-
-
-
     [HttpGet("usuarioPorId/{id}")]
     public Usuario getUsuario(int id)
     {
@@ -202,32 +164,6 @@ public class UsuarioController : ControllerBase
         return usuario;
     }
 
-
-    [HttpGet("actualizarEstadoPedido/{id}")]
-    public void ActualizarEstadoPedido(int id)
-    {
-        var pedido = _context.Pedido.FirstOrDefault(x => x.Id == id);
-
-        pedido.Estado = "entregado"; // Actualizar el estado del pedido
-
-        _context.SaveChanges(); // Guardar los cambios en la base de datos
-
-
-    }
-
-
-    // Obtener mensajes por idEmisor y idReceptor
-    [HttpGet("mensajes/{idEmisor}/{idReceptor}")]
-    public List<Mensaje> ObtenerMensajes(int idEmisor, int idReceptor)
-    {
-        var mensajes = _context.Mensaje
-            .Include(m => m.Emisor)
-            .Include(m => m.Receptor)
-            .Where(m => m.IdEmisor == idEmisor && m.IdReceptor == idReceptor || m.IdEmisor == idReceptor && m.IdReceptor == idEmisor)
-            .ToList();
-
-        return mensajes;
-    }
 
 
     //generarImagenQr
@@ -423,86 +359,7 @@ public class UsuarioController : ControllerBase
 
 
 
-    //devuelve el pedido segun su id
-    /* "estado": "pendiente",
-    "fecha": "2023-06-22T00:00:00",
-    "id": 3,
-    "idEmpleado": 13,
-    "empleado": null,
-    "idCliente": 17,
-    "cliente": null,
-    "montoTotal": 22718 */
-    [HttpGet("obtenerPedidoPorId/{id:int:min(1)}")]
-    public Pedido ObtenerPedidoPorId(int id)
-    {
-
-        Pedido pedido = _context.Pedido.FirstOrDefault(p => p.Id == id);
-
-        return pedido;
-    }
-
-
-
-
-
-    //se muestra la cantidad y el id del producto del pedido
-    //uso estos id para que me devuelva los productos aca obtenerProductosPorPedido v
-
-    /*      "id": 5,
-            "idPedido": 3,
-            "pedido": null,
-            "idProducto": 9,
-            "producto": null,
-            "cantidad": 1,
-            "monto": 3000       */
-
-    [HttpGet("obtenerProductosPorPedido/{id:int:min(1)}")]
-    public List<ProductoPedido> obtenerProductosPorPedido(int id)
-    {
-        var productosPedido = _context.ProductoPedido
-        .Where(pp => pp.IdPedido == id)
-        /* .Select(pp => pp.Producto) */
-        .ToList();
-        return productosPedido;
-    }
-
-
-
-
-    // http://192.168.0.102:5250/api/Usuario/obtenerProductosPorIds?ids=9&ids=10
-
-
-    /* "id": 9,
-    "cantidad": 100,
-    "categoria": "comida y bebida",
-    "descripcion": "super combo de bebida y comida",
-    "imagen": "/Img_productos\\avatar_4d0f984e6d834248b569f35ac22148a9.jpg",
-    "imagenFile": null,
-    "nombre": "super combo",
-    "precio": 3000 */
-
-    // recibe array de ids de productos y devuelve los productos
-    [HttpGet("obtenerProductosPorIds")]
-    public List<Producto> obtenerProductosPorIds([FromQuery] int[] ids)
-    {
-        var productos = _context.Producto
-            .Where(p => ids.Contains(p.Id))
-            .ToList();
-
-        return productos;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
+  
 
 
 
