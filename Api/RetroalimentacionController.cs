@@ -42,6 +42,7 @@ public class RetroalimentacionController : ControllerBase
 
     //retroalimentaciones
     [HttpGet("retroalimentaciones")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public List<Retroalimentacion> getRetroalimentaciones()
     {
         var retroalimentacion = _context.Retroalimentacion

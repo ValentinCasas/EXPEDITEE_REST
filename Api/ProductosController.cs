@@ -53,6 +53,7 @@ public class ProductosController : ControllerBase
             "monto": 3000       */
 
     [HttpGet("obtenerProductosPorPedido/{id:int:min(1)}")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public List<ProductoPedido> obtenerProductosPorPedido(int id)
     {
         var productosPedido = _context.ProductoPedido
@@ -76,6 +77,7 @@ public class ProductosController : ControllerBase
 
     // recibe array de ids de productos y devuelve los productos
     [HttpGet("obtenerProductosPorIds")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public List<Producto> obtenerProductosPorIds([FromQuery] int[] ids)
     {
         var productos = _context.Producto

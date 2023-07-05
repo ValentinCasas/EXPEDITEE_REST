@@ -10,7 +10,7 @@ var configuration = builder.Configuration;
 
 /* builder.WebHost.UseUrls("http://localhost:5250", "http://*:5250", "http://192.168.0.102:5250");
  */
-builder.WebHost.UseUrls("http://localhost:5250", "http://*:5250", "http://192.168.1.105:5250");
+builder.WebHost.UseUrls("http://localhost:5250", "http://*:5250", "http://192.168.0.101:5250");
 
 
 builder.Services.AddControllersWithViews();

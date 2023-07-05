@@ -41,6 +41,7 @@ public class MensajeController : ControllerBase
 
     // Envío de mensaje a empleado
     [HttpGet("enviar/{idEmisor}/{idReceptor}/{mensaje}")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public Mensaje enviarMensaje(int idEmisor, int idReceptor, string mensaje)
     {
         Usuario emisor = _context.Usuario.FirstOrDefault(u => u.Id == idEmisor);
@@ -69,16 +70,18 @@ public class MensajeController : ControllerBase
 
     // Obtener mensajes por idEmisor y idReceptor
     [HttpGet("mensajes/{idEmisor}/{idReceptor}")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public List<Mensaje> ObtenerMensajes(int idEmisor, int idReceptor)
-    {
-        var mensajes = _context.Mensaje
-            .Include(m => m.Emisor)
-            .Include(m => m.Receptor)
-            .Where(m => m.IdEmisor == idEmisor && m.IdReceptor == idReceptor || m.IdEmisor == idReceptor && m.IdReceptor == idEmisor)
-            .ToList();
+{
+    var mensajes = _context.Mensaje
+        .Include(m => m.Emisor)
+        .Include(m => m.Receptor)
+        .Where(m => m.IdEmisor == idEmisor && m.IdReceptor == idReceptor || m.IdEmisor == idReceptor && m.IdReceptor == idEmisor)
+        .OrderBy(m => m.Fecha)  // Ordenar por fecha de envío
+        .ToList();
 
-        return mensajes;
-    }
+    return mensajes;
+}
 
 
 

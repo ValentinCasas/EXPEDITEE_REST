@@ -47,7 +47,7 @@ public class UsuarioController : ControllerBase
     {
         try
         {
-            var usuario = _context.Usuario.FirstOrDefault(x => x.Mail == loginView.Mail);
+            var usuario = _context.Usuario.FirstOrDefault(x => x.Mail == loginView.Mail && x.Rol != 3);
             if (usuario == null)
             {
                 return NotFound();
@@ -123,6 +123,7 @@ public class UsuarioController : ControllerBase
 
     // GET api/propietario/imagen/{id}
     [HttpGet("imagen/{id:int:min(1)}")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public IActionResult ObtenerImagenPropietario(int id)
     {
         var propietario = _context.Usuario.FirstOrDefault(x => x.Id == id);
@@ -158,6 +159,7 @@ public class UsuarioController : ControllerBase
 
 
     [HttpGet("usuarioPorId/{id}")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public Usuario getUsuario(int id)
     {
         var usuario = _context.Usuario.FirstOrDefault(x => x.Id == id);
@@ -188,6 +190,7 @@ public class UsuarioController : ControllerBase
 
 
     [HttpGet("generarImgComprobante/{idPedido}/{montoTotal}/{nombreEmpleado}/{nombreCliente}/{mail}")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<IActionResult> generarImgComprobante(int idPedido, decimal montoTotal, string nombreEmpleado, string nombreCliente, string mail)
     {
         string expediteeText = "EXPEDITEE";
@@ -314,6 +317,7 @@ public class UsuarioController : ControllerBase
 
     //devuelve todos los empleados
     [HttpGet("empleados")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public List<Usuario> ObtenerEmpleados()
     {
         var empleados = _context.Usuario
@@ -324,6 +328,7 @@ public class UsuarioController : ControllerBase
 
     //devuelve los clientes con el id del pedido que hizo    
     [HttpGet("misPendientes/{id:int:min(1)}")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public List<UsuarioIdPedido> ObtenerClientesConPedidosPorEmpleado(int id)
     {
         var pedidos = _context.Pedido

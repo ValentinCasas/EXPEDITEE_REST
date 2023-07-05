@@ -41,6 +41,7 @@ public class PedidoController : ControllerBase
 
 
     [HttpGet("actualizarEstadoPedido/{id}")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public void ActualizarEstadoPedido(int id)
     {
         var pedido = _context.Pedido.FirstOrDefault(x => x.Id == id);
@@ -64,6 +65,7 @@ public class PedidoController : ControllerBase
     "cliente": null,
     "montoTotal": 22718 */
     [HttpGet("obtenerPedidoPorId/{id:int:min(1)}")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public Pedido ObtenerPedidoPorId(int id)
     {
 
